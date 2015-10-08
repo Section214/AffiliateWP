@@ -8,6 +8,12 @@ if( ! empty( $_GET['affiliate_id'] ) && is_array( $_GET['affiliate_id'] ) ) {
 	$to_delete = ! empty( $_GET['affiliate_id'] ) ? array( absint( $_GET['affiliate_id'] ) ) : array();
 
 }
+
+if( count( $to_delete ) == 1 && affwp_get_affiliate_user_id( $to_delete[0] ) == get_current_user_id() ) {
+	$deleting_only_self = true;
+} else {
+	$deleting_only_self = false;
+}
 ?>
 <div class="wrap">
 
@@ -25,14 +31,14 @@ if( ! empty( $_GET['affiliate_id'] ) && is_array( $_GET['affiliate_id'] ) ) {
 			<li>
 				<?php printf( _x( 'ID #%d: %s', 'Affiliate ID, affiliate name', 'affiliate-wp' ), $affiliate_id, affiliate_wp()->affiliates->get_affiliate_name( $affiliate_id ) ); ?>
 				<input type="hidden" name="affwp_affiliate_ids[]" value="<?php echo esc_attr( $affiliate_id ); ?>"/>
-			</li> 
+			</li>
 
 		<?php endforeach; ?>
 		</ul>
 
 		<p><?php _e( 'Deleting these affiliates will also delete their referral and visit data.' , 'affiliate-wp' ); ?></p>
 
-		<?php if( current_user_can( 'delete_users' ) ) :?>
+		<?php if( current_user_can( 'delete_users' ) && ! $deleting_only_self ) :?>
 		<p>
 			<label for="affwp_delete_users_too">
 				<input type="checkbox" name="affwp_delete_users_too" id="affwp_delete_users_too" value="1" />
