@@ -39,8 +39,21 @@ $reason       = affwp_get_affiliate_meta( $affiliate->affiliate_id, '_rejection_
 				</th>
 
 				<td>
-					<input class="small-text" type="text" name="user_id" id="user_id" value="<?php echo esc_attr( $affiliate->user_id ); ?>" disabled="1" />
+					<input class="small-text" type="text" name="user_id" id="user_id" value="<?php echo date_i18n( get_option( 'date_format' ), strtotime( $affiliate->user_id ) ); ?>" disabled="1" />
 					<p class="description"><?php _e( 'The affiliate\'s user ID. This cannot be changed.', 'affiliate-wp' ); ?></p>
+				</td>
+
+			</tr>
+
+			<tr class="form-row form-required">
+
+				<th scope="row">
+					<label for="date_registered"><?php _e( 'Date Registered', 'affiliate-wp' ); ?></label>
+				</th>
+
+				<td>
+					<input class="regular-text" type="text" name="date_registered" id="date_registered" value="<?php echo esc_attr( $affiliate->date_registered ); ?>" disabled="1" />
+					<p class="description"><?php _e( 'The date this affiliate was registered. This cannot be changed.', 'affiliate-wp' ); ?></p>
 				</td>
 
 			</tr>
