@@ -115,8 +115,6 @@ class AffWP_Creatives_Table extends WP_List_Table {
 		global $status, $page;
 
 		parent::__construct( array(
-			'singular'  => 'creative',
-			'plural'    => 'creatives',
 			'ajax'      => false
 		) );
 
@@ -267,15 +265,6 @@ class AffWP_Creatives_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function process_bulk_action() {
-
-		if( empty( $_REQUEST['_wpnonce'] ) ) {
-			return;
-		}
-
-		if( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-creatives' ) ) {
-			return;
-		}
-
 		$ids = isset( $_GET['creative_id'] ) ? $_GET['creative_id'] : false;
 
 		if ( ! is_array( $ids ) ) {

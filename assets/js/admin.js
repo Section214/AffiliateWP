@@ -125,6 +125,49 @@ jQuery(document).ready(function($) {
 		$('#affwp_user_search_results').html('');
 	});
 
+    // creative page title
+    $('body.affiliates_page_affiliate-wp-creatives').on('click', '#titlewrap', function(e) {
+        $('#titlewrap label').addClass('screen-reader-text');
+        $('#titlewrap input').select();
+    });
+
+    $('body.affiliates_page_affiliate-wp-creatives').on('blur', '#titlewrap', function(e) {
+    	if ( $('#titlewrap input').val() === '' ) {
+            $('#titlewrap label').removeClass('screen-reader-text');
+        }
+    });
+
+    // creative fields
+    $('body.affiliates_page_affiliate-wp-creatives').on('change', '#affwp-creative-type select', function(e) {
+    	var selected = $(this).val();
+
+        if ( selected == 'swf' ) {
+            $('#affwp-creative-image').css('display', 'none');
+            $('#affwp-creative-text').css('display', 'none');
+            $('#affwp-creative-url').css('display', 'none');
+            $('#affwp-creative-dimensions').css('display', 'block');
+            $('#affwp-creative-swf').css('display', 'block');
+            $('#affwp-creative-html').css('display', 'none');
+            $('#preview_creative img').css('display', 'none');
+        } else if ( selected == 'html' ) {
+            $('#affwp-creative-image').css('display', 'none');
+            $('#affwp-creative-text').css('display', 'none');
+            $('#affwp-creative-url').css('display', 'none');
+            $('#affwp-creative-dimensions').css('display', 'none');
+            $('#affwp-creative-swf').css('display', 'none');
+            $('#affwp-creative-html').css('display', 'block');
+            $('#preview_creative img').css('display', 'none');
+        } else {
+            $('#affwp-creative-image').css('display', 'block');
+            $('#affwp-creative-text').css('display', 'block');
+            $('#affwp-creative-url').css('display', 'block');
+            $('#affwp-creative-dimensions').css('display', 'none');
+            $('#affwp-creative-swf').css('display', 'none');
+            $('#affwp-creative-html').css('display', 'none');
+            $('#preview_creative img').css('display', 'block');
+        }
+    });
+
 	// select image for creative
 	var file_frame;
 	$('body').on('click', '.upload_image_button', function(e) {
@@ -175,11 +218,73 @@ jQuery(document).ready(function($) {
 			var img = $('<img />');
 			img.attr('src', attachment.url);
 			// replace previous image with new one if selected
-			$('#preview_image').empty().append( img );
+			$('#preview_creative').empty().append( img );
 
 			// show preview div when image exists
-			if ( $('#preview_image img') ) {
-				$('#preview_image').show();
+			if ( $('#preview_creative img') ) {
+				$('#preview_creative').show();
+			}
+		});
+
+		// Finally, open the modal
+		file_frame.open();
+	});
+
+    // select SWF for creative
+	var file_frame;
+	$('body').on('click', '.upload_swf_button', function(e) {
+
+		e.preventDefault();
+
+		var formfield = $(this).prev();
+
+		// If the media frame already exists, reopen it.
+		if ( file_frame ) {
+			//file_frame.uploader.uploader.param( 'post_id', set_to_post_id );
+			file_frame.open();
+			return;
+		}
+
+		// Create the media frame.
+		file_frame = wp.media.frames.file_frame = wp.media({
+			frame: 'select',
+			title: 'Choose SWF File',
+			multiple: false,
+			library: {
+				type: 'swf'
+			},
+			button: {
+				text: 'Use SWF'
+			}
+		});
+
+		file_frame.on( 'menu:render:default', function(view) {
+	        // Store our views in an object.
+	        var views = {};
+
+	        // Unset default menu items
+	        view.unset('library-separator');
+	        view.unset('gallery');
+	        view.unset('featured-image');
+	        view.unset('embed');
+
+	        // Initialize the views in our view object.
+	        view.set(views);
+	    });
+
+		// When an SWF is selected, run a callback.
+		file_frame.on( 'select', function() {
+			var attachment = file_frame.state().get('selection').first().toJSON();
+			formfield.val(attachment.url);
+
+			var img = $('<img />');
+			img.attr('src', attachment.url);
+			// replace previous image with new one if selected
+			$('#preview_creative').empty().append( img );
+
+			// show preview div when image exists
+			if ( $('#preview_creative img') ) {
+				$('#preview_creative').show();
 			}
 		});
 

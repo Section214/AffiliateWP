@@ -37,6 +37,11 @@ class Affiliate_WP_Creatives_DB extends Affiliate_WP_DB {
 			'image'        => '%s',
 			'status'       => '%s',
 			'date'         => '%s',
+			'type'         => '%s',
+			'swf'          => '%s',
+			'width'        => '%s',
+			'height'       => '%s',
+			'html'         => '%s'
 		);
 	}
 
@@ -143,6 +148,11 @@ class Affiliate_WP_Creatives_DB extends Affiliate_WP_DB {
 			'date'   => current_time( 'mysql' ),
 			'url'	 => '',
 			'image'  => '',
+			'type'   => '',
+			'width'  => '',
+			'height' => '',
+			'swf'    => '',
+			'html'   => ''
 		);
 
 		$args = wp_parse_args( $data, $defaults );
@@ -171,6 +181,11 @@ class Affiliate_WP_Creatives_DB extends Affiliate_WP_DB {
 			text tinytext NOT NULL,
 			image varchar(255) NOT NULL,
 			status tinytext NOT NULL,
+			type tinytext NOT NULL,
+			width int(10) NOT NULL,
+            height int(10) NOT NULL,
+            swf varchar(255) NOT NULL,
+            html longtext NOT NULL,
 			date datetime NOT NULL,
 			PRIMARY KEY  (creative_id),
 			KEY creative_id (creative_id)

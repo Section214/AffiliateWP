@@ -33,7 +33,12 @@ function affwp_add_creative( $data = array() ) {
 		'url'         => ! empty( $data['url'] ) ? esc_url_raw( $data['url'] ) : get_site_url(),
 		'text'        => ! empty( $data['text'] ) ? sanitize_text_field( $data['text'] ) : get_bloginfo( 'name' ),
 		'image'       => ! empty( $data['image'] ) ? esc_url( $data['image'] ) : '',
-		'status'      => ! empty( $data['status'] ) ? sanitize_text_field( $data['status'] ) : '',	
+		'status'      => ! empty( $data['status'] ) ? sanitize_text_field( $data['status'] ) : '',
+		'type'        => ! empty( $data['type'] ) ? sanitize_text_field( $data['type'] ) : '',
+		'width'       => ! empty( $data['width'] ) ? sanitize_text_field( $data['width'] ) : '',
+		'height'      => ! empty( $data['height'] ) ? sanitize_text_field( $data['height'] ) : '',
+		'swf'         => ! empty( $data['swf'] ) ? esc_url( $data['swf'] ) : '',
+		'html'        => ! empty( $data['html'] ) ? sanitize_text_field( $data['html'] ) : ''
 	);
 
 	if ( affiliate_wp()->creatives->add( $args ) ) {
@@ -66,6 +71,11 @@ function affwp_update_creative( $data = array() ) {
 	$args['text']         = ! empty( $data['text'] ) ? sanitize_text_field( $data['text'] ) : get_bloginfo( 'name' );
 	$args['image']        = ! empty( $data['image'] ) ? sanitize_text_field( $data['image'] ) : '';
 	$args['status']       = ! empty( $data['status'] ) ? sanitize_text_field( $data['status'] ) : '';
+	$args['type']         = ! empty( $data['type'] ) ? sanitize_text_field( $data['type'] ) : '';
+	$args['width']        = ! empty( $data['width'] ) ? sanitize_text_field( $data['width'] ) : '';
+	$args['height']       = ! empty( $data['height'] ) ? sanitize_text_field( $data['height'] ) : '';
+	$args['swf']          = ! empty( $data['swf'] ) ? esc_url( $data['swf'] ) : '';
+	$args['html']         = ! empty( $data['html'] ) ? esc_textarea( $data['html'] ) : '';
 
 	if ( affiliate_wp()->creatives->update( $creative_id, $args, '', 'creative' ) ) {
 		return true;
